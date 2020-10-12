@@ -9,10 +9,17 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
 const mongoose = require("mongoose");
 const app = express();
+const cors = require("cors");
+
 
 /*
  * Middlewares
  */
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+  })
+);
 
 app.use(logger("dev")); // This logs HTTP reponses in the console.
 app.use(express.json()); // Access data sent as json @req.body
