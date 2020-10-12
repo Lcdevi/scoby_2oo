@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const Items = require("../models/Item");
+const Item = require("../models/Item");
 const uploader = require("../config/cloudinary");
 
 
 router.get("/", (req, res, next)=>{
-    Items
+    Item
         .find()
         .then((itemsList)=> {
             res.status(200).json(itemsList);
@@ -16,7 +16,7 @@ router.get("/", (req, res, next)=>{
 })
 
 router.get("/:id", (req, res, next)=> {
-    Items
+    Item
         .findById(req.params.id)
         .then((oneItem)=> {
             res.status(200).json(oneItem);
@@ -33,7 +33,7 @@ router.post('/', uploader.single("image"), (req, res, next) => {
         newItem.image = req.file.path;
     }
 
-   Items.create(newItem)
+   Item.create(newItem)
     .then((itemDocument) => {
         res.status(201).json(itemDocument)
     })
@@ -49,7 +49,7 @@ router.patch("/:id", uploader.single("image"), (req, res, next) => {
         updateValues.image = req.file.path;
     }
 
-    Items.findByIdAndUpdate(req.params.id, updateValues, {new: true} )
+    Item.findByIdAndUpdate(req.params.id, updateValues, {new: true} )
         .then(itemDocument => {
             res.status(200).json(itemDocument);
         })
@@ -59,7 +59,7 @@ router.patch("/:id", uploader.single("image"), (req, res, next) => {
 })
 
 router.delete("/:id", (req, res, next) => {
-    Items
+    Item
         .findByIdAndRemove(req.params.id)
         .then((deletedItem) => {
             res.sendStatus(204).json(deletedItem);
