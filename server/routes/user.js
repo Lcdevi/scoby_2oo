@@ -11,7 +11,7 @@ router.patch("/me", uploader.single("image"), (req, res, next) => {
       updateValues.image = req.file.path;
   }
 
-  User.findByIdAndUpdate(req.params.id, updateValues, {new: true} )
+  User.findByIdAndUpdate(req.session.currentUser._id, updateValues, {new: true} )
       .then(userDocument => {
           res.status(200).json(userDocument);
       })
