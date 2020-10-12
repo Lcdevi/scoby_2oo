@@ -4,10 +4,6 @@ const User = require("../models/User");
 const uploader = require("../config/cloudinary");
 
 
-router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
-});
-
 router.patch("/me", uploader.single("image"), (req, res, next) => {
   const updateValues = req.body;
 

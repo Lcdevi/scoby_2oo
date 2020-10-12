@@ -42,11 +42,13 @@ app.use(
  */
 
 const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
+const usersRouter = require("./routes/user");
 const authRouter = require("./routes/auth");
+const itemsRouter = require("./routes/items");
 
 app.use("/", indexRouter);
 app.use("/api/auth", authRouter);
-app.use("/api/users", usersRouter);
+app.use("/api/user", usersRouter);
+app.use("/api/items", itemsRouter);
 
 module.exports = app;
