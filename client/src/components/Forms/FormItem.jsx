@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import LocationAutoComplete from "../LocationAutoComplete";
 import "../../styles/form.css";
 import { withUser } from "../Auth/withUser";
+import apiHandler from "../../api/apiHandler";
 
 class ItemForm extends Component {
   state = {
@@ -37,14 +38,17 @@ class ItemForm extends Component {
   }
 
   buildFormData = (formData, data, parentKey) => {
+    console.log("data", data, "parent key", parentKey)
     if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
       Object.keys(data).forEach(key => {
         this.buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
+        console.log(key)
       });
     } else {
       const value = data == null ? '' : data;
   
       formData.append(parentKey, value);
+      console.log(value)
     }
   }
   
@@ -56,19 +60,16 @@ class ItemForm extends Component {
     return formData;
   }
 
+
   handleSubmit = event => {
     event.preventDefault();
     console.log("Wax On Wax Off");
 
-    // In order to send back the data to the client, since there is an input type file you have to send the
-    // data as formdata.
-    // The object that you'll be sending will maybe be a nested object, in order to handle nested objects in our form data
-    // Check out the stackoverflow solution below : )
-
-    // Nested object into formData by user Vladimir "Vladi vlad" Novopashin @stackoverflow : ) => https://stackoverflow.com/a/42483509
-
-    console.log(this.jsonToFormData(this.state))
-
+    const formattedForm = this.jsonToFormData(this.state)
+    apiHandler
+      .createItem(formattedForm)
+      .then(res => console.log(res))
+      .catch(err => console.error(err))
   };
 
   handlePlace = place => {
@@ -88,7 +89,10 @@ class ItemForm extends Component {
     console.log(this.state.id_user)
     return (
       <div className="ItemForm-container">
-        <form className="form" onChange={this.handleChange}>
+        <form 
+          className="form" 
+          onSubmit={this.handleSubmit} 
+          onChange={this.handleChange}>
           <h2 className="title">Add Item</h2>
 
           <div className="form-group">
@@ -183,7 +187,7 @@ class ItemForm extends Component {
             personal page.
           </p>
 
-          <button className="btn-submit" onClick={this.handleSubmit}>Add Item</button>
+          <button className="btn-submit" >Add Item</button>
         </form>
       </div>
     );
