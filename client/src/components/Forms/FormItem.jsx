@@ -5,12 +5,12 @@ import "../../styles/form.css";
 class ItemForm extends Component {
   state = {};
 
-  handleChange(event) {
+  handleChange = event => {
     console.log("Wax On Wax Off");
     this.setState({});
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = event => {
     event.preventDefault();
     console.log("Wax On Wax Off");
 
@@ -22,7 +22,7 @@ class ItemForm extends Component {
     // Nested object into formData by user Vladimir "Vladi vlad" Novopashin @stackoverflow : ) => https://stackoverflow.com/a/42483509
   };
 
-  handlePlace = (place) => {
+  handlePlace = place => {
     // This handle is passed as a callback to the autocomplete component.
     // Take a look at the data and see what you can get from it.
     // Look at the item model to know what you should retrieve and set as state.
