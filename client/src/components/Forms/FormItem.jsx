@@ -21,8 +21,6 @@ class ItemForm extends Component {
   };
   
   handleChange = event => {
-    console.log("Wax On Wax Off");
-    console.log(this.state.id_user);
     if(event.target.name === "location") {
       return 
     }
@@ -38,17 +36,14 @@ class ItemForm extends Component {
   }
 
   buildFormData = (formData, data, parentKey) => {
-    console.log("data", data, "parent key", parentKey)
     if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
       Object.keys(data).forEach(key => {
         this.buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
-        console.log(key)
       });
     } else {
       const value = data == null ? '' : data;
   
       formData.append(parentKey, value);
-      console.log(value)
     }
   }
   
@@ -63,7 +58,6 @@ class ItemForm extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    console.log("Wax On Wax Off");
 
     const formattedForm = this.jsonToFormData(this.state)
     apiHandler
@@ -86,7 +80,6 @@ class ItemForm extends Component {
   };
 
   render() {
-    console.log(this.state.id_user)
     return (
       <div className="ItemForm-container">
         <form 
