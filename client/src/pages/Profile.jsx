@@ -7,12 +7,16 @@ import "../styles/CardItem.css";
 class Profile extends Component {
 
   state = {
-    phone: "",
+    phoneNumber: "",
   }
 
+  
+
   handleChange = (event) => {
-    console.log(event.target.name)
-    this.setState({ [event.target.name] : event.target.value  })
+    const key = event.target.name;
+    const value = event.target.value;
+    console.log(event.target.value)
+    this.setState({ [key] : value  })
   }
 
 
@@ -22,7 +26,6 @@ class Profile extends Component {
 
     return (
       <div style={{ padding: "100px", fontSize: "1.25rem" }}>
-
         <section className="Profile">
           <div className="user-image round-image">
             <img src={user.profileImg} alt={user.firstName} />
@@ -50,7 +53,7 @@ class Profile extends Component {
                   type="text"
                   name="phoneNumber"
                   placeholder="Add phone number"
-                  value={this.state.phone}
+                  value={this.state.phoneNumber}
                   onChange={this.handleChange}
                 />
               </div>
