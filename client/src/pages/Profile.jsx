@@ -10,12 +10,13 @@ class Profile extends Component {
 
   state = {
     phoneNumber: this.props.authContext.user.phoneNumber,
+    userItems: null,
   }
 
   handleSubmit = (event) => {
     event.preventDefault();
     apiHandler
-      .updateProfile(this.state)
+      .updateProfile({ phoneNumber: this.state.phoneNumber })
       .then((res)=> this.props.authContext.changePhoneNumber(res.phoneNumber))
       .catch(error => console.log(error))
   }
@@ -28,7 +29,14 @@ class Profile extends Component {
 
   componentDidMount(){
 
-    
+    apiHandler
+      .getItems()
+      .then((apiRes) => {
+        const userItems = apiRes.filter(item => item.id_user === this.props.authContext.user._id);
+        this.setState({ userItems : userItems })
+        console.log(this.state)
+      })
+      .catch()
 
 
   }
@@ -86,41 +94,55 @@ class Profile extends Component {
             }
           </div>
 
-          {/* Break whatever is belo  */}
+          {/* Break whatever is bello  */}
           <div className="CardItem">
-            <div className="item-empty">
-              <div className="round-image">
-                <img src="/media/personal-page-empty-state.svg" alt="" />
-              </div>
-              <p>You don't have any items :(</p>
-            </div>
-          </div>
-
-          <div className="CardItem">
-            <h3>Your items</h3>
-            <div className="item">
-              <div className="round-image">
-                <img
-                  src="https://vignette.wikia.nocookie.net/simpsons/images/1/14/Ralph_Wiggum.png/revision/latest/top-crop/width/360/height/360?cb=20100704163100"
-                  alt="item"
-                />
-              </div>
-              <div className="description">
-                <h2>Name of item</h2>
-                <h4>Quantity: 1 </h4>
-                <p>Description of the item</p>
-                <div className="buttons">
-                  <span>
-                    <button className="btn-secondary">Delete</button>
-                  </span>
-                  <span>
-                    <button className="btn-primary">Edit</button>
-                  </span>
+            { !this.state.userItems 
+              ?(
+                <div className="item-empty">
+                  <div className="round-image">
+                    <img src="/media/personal-page-empty-state.svg" alt="" />
+                  </div>
+                  <p>You don't have any items :</p>
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
+              )
+              : (
+                <div>
+                  <h3>Your items</h3>
+                  {
+                    this.state.userItems.map(item => {
+                      return(
+                        <div className="CardItem">
+                        <div key={item._id} className="item">
+                          <div className="round-image">
+                            <img
+                              src={item.image}
+                              alt="item"
+                            />
+                          </div>
+                          <div className="description">
+                            <h2>{item.name}</h2>
+                            <h4>Quantity: {item.quantity} </h4>
+                            <p>{item.description}</p>
+                            <div className="buttons">
+                              <span>
+                                <button className="btn-secondary">Delete</button>
+                              </span>
+                              <span>
+                                <button className="btn-primary">Edit</button>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      )
+                    })
+                  
+                  }
+                </div>
+              )}
+          </div>    
+        
+       </section>
       </div>
     );
   }
