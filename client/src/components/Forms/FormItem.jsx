@@ -63,6 +63,9 @@ class ItemForm extends Component {
     apiHandler
       .createItem(formattedForm)
       .then(res => console.log(res))
+      .then(() => {
+        this.props.history.push("/");
+      })
       .catch(err => console.error(err))
   };
 
