@@ -9,7 +9,7 @@ class ItemForm extends Component {
     name: "",
     description: "",
     image: "",
-    category: "",
+    category: "-1",
     quantity: "",
     address: "",
     location: {
@@ -98,6 +98,7 @@ class ItemForm extends Component {
               type="text"
               placeholder="What are you giving away ?"
               name="name"
+              value={this.state.name}
             />
           </div>
 
@@ -106,7 +107,7 @@ class ItemForm extends Component {
               Category
             </label>
 
-            <select id="category" name ="category" defaultValue="-1">
+            <select id="category" name ="category" defaultValue={this.state.category}>
               <option value="-1" disabled>
                 Select a category
               </option>
@@ -126,6 +127,7 @@ class ItemForm extends Component {
               className="input" 
               id="quantity" 
               type="number" 
+              value={this.state.quantity}
             />
           </div>
 
@@ -145,6 +147,7 @@ class ItemForm extends Component {
               id="description"
               className="text-area"
               placeholder="Tell us something about this item"
+              value={this.state.description}
             ></textarea>
           </div>
 

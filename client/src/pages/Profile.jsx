@@ -10,22 +10,6 @@ class Profile extends Component {
 
     return (
       <div style={{ padding: "100px", fontSize: "1.25rem" }}>
-        <h2 style={{ fontSize: "1.5rem", marginBottom: "10px" }}>
-          This is profile, it's protected !
-        </h2>
-        <p>
-          Checkout the<b>ProtectedRoute</b> component in
-          <code>./components/ProtectRoute.jsx</code>
-        </p>
-        <a
-          style={{ color: "dodgerblue", fontWeight: "bold" }}
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://reacttraining.com/react-router/web/example/auth-workflow"
-        >
-          React router dom Demo of a protected route
-        </a>
-
         <section className="Profile">
           <div className="user-image round-image">
             <img src={user.profileImg} alt={user.firstName} />
