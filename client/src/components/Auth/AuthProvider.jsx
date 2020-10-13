@@ -30,6 +30,12 @@ class AuthProvider extends Component {
     this.setState({ user: null, isLoggedIn: false });
   };
 
+  changePhoneNumber = (phoneNumber) => {
+    const newUser = {...this.state.user}
+    newUser.phoneNumber = phoneNumber
+    this.setState({ user: newUser })
+  }
+
   render() {
     //  Setup all the values/functions you want to expose to anybody reading
     // from the AuthContext.
@@ -39,6 +45,7 @@ class AuthProvider extends Component {
       removeUser: this.removeUser,
       isLoggedIn: this.state.isLoggedIn,
       isLoading: this.state.isLoading,
+      changePhoneNumber: this.changePhoneNumber,
     };
     return (
       <AuthContext.Provider value={authValues}>

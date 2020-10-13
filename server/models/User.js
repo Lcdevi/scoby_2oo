@@ -12,10 +12,7 @@ const userSchema = new Schema({
   email: String,
   password: String,
   city: String,
-  contact: {
-    type: Schema.Types.ObjectId,
-    ref: "Contact",
-  },
+  phoneNumber: String,
 });
 
 const User = mongoose.model("User", userSchema);

@@ -56,5 +56,12 @@ export default {
       .post("/api/items", data)
       .then((res) => res.data)
       .catch(errorHandler);
+  },
+
+  updateProfile(data){
+    return service
+      .patch("/api/user/me", data)
+      .then((res) => res.data)
+      .catch(errorHandler);
   }
 };

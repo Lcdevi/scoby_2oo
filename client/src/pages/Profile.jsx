@@ -3,27 +3,40 @@ import { Link } from "react-router-dom";
 import { withUser } from "../components/Auth/withUser";
 import "../styles/Profile.css";
 import "../styles/CardItem.css";
+import apiHandler from "../api/apiHandler";
+
 
 class Profile extends Component {
 
   state = {
-    phoneNumber: "",
+    phoneNumber: this.props.authContext.user.phoneNumber,
   }
 
-  
+  handleSubmit = (event) => {
+    event.preventDefault();
+    apiHandler
+      .updateProfile(this.state)
+      .then((res)=> this.props.authContext.changePhoneNumber(res.phoneNumber))
+      .catch(error => console.log(error))
+  }
 
   handleChange = (event) => {
     const key = event.target.name;
     const value = event.target.value;
-    console.log(event.target.value)
-    this.setState({ [key] : value  })
+    this.setState({ [key] : value }, () => console.log(this.state.phoneNumber, "yo"))
+  }
+
+  componentDidMount(){
+
+    
+
+
   }
 
 
   render() {
     const { authContext } = this.props;
     const { user } = authContext;
-
     return (
       <div style={{ padding: "100px", fontSize: "1.25rem" }}>
         <section className="Profile">
@@ -39,7 +52,12 @@ class Profile extends Component {
             </Link>
           </div>
 
+
           <div className="user-contact">
+            {
+              !this.props.authContext.user.phoneNumber 
+              ? (
+            <>
             <h4>Add a phone number</h4>
 
             <form className="form" onSubmit={this.handleSubmit}>
@@ -59,6 +77,13 @@ class Profile extends Component {
               </div>
               <button className="form__button">Add phone number</button>
             </form>
+            </>)
+            : <>
+              <h1>telephone number :</h1>
+              <p>{this.state.phoneNumber}</p>
+              </>
+
+            }
           </div>
 
           {/* Break whatever is belo  */}
