@@ -73,6 +73,7 @@ class LocationAutoComplete extends Component {
           value={this.state.search}
           onChange={this.handleSearchChange}
           placeholder="Enter an address"
+          name="location"
         />
         <ul className="LocationAutoComplete-results">
           {this.state.results.map((place) => (

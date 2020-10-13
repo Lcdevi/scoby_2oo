@@ -1,13 +1,59 @@
 import React, { Component } from "react";
 import LocationAutoComplete from "../LocationAutoComplete";
 import "../../styles/form.css";
+import { withUser } from "../Auth/withUser";
 
 class ItemForm extends Component {
-  state = {};
-
+  state = {
+    name: "",
+    description: "",
+    image: "",
+    category: "",
+    quantity: "",
+    address: "",
+    location: {
+      type: "Point",
+      coordinates: [0,0],
+      formattedAddress: "",
+    },
+    id_user: this.props.authContext.user._id,
+  };
+  
   handleChange = event => {
     console.log("Wax On Wax Off");
-    this.setState({});
+    console.log(this.state.id_user);
+    if(event.target.name === "location") {
+      return 
+    }
+    const name = event.target.name;
+    const value =
+      event.target.type === "checkbox"
+        ? event.target.checked
+        : event.target.type === "file"
+        ? event.target.files[0]
+        : event.target.value;
+
+    this.setState({ [name]: value });
+  }
+
+  buildFormData = (formData, data, parentKey) => {
+    if (data && typeof data === 'object' && !(data instanceof Date) && !(data instanceof File)) {
+      Object.keys(data).forEach(key => {
+        this.buildFormData(formData, data[key], parentKey ? `${parentKey}[${key}]` : key);
+      });
+    } else {
+      const value = data == null ? '' : data;
+  
+      formData.append(parentKey, value);
+    }
+  }
+  
+  jsonToFormData = (data) => {
+    const formData = new FormData();
+  
+    this.buildFormData(formData, data);
+  
+    return formData;
   }
 
   handleSubmit = event => {
@@ -20,16 +66,26 @@ class ItemForm extends Component {
     // Check out the stackoverflow solution below : )
 
     // Nested object into formData by user Vladimir "Vladi vlad" Novopashin @stackoverflow : ) => https://stackoverflow.com/a/42483509
+
+    console.log(this.jsonToFormData(this.state))
+
   };
 
   handlePlace = place => {
-    // This handle is passed as a callback to the autocomplete component.
-    // Take a look at the data and see what you can get from it.
-    // Look at the item model to know what you should retrieve and set as state.
-    console.log(place);
+
+    this.setState({
+      address: place.place_name,
+      location: {
+        type: "Point",
+        coordinates: place.center,
+        formattedAddress: place.place_name,
+      }
+    })
+
   };
 
   render() {
+    console.log(this.state.id_user)
     return (
       <div className="ItemForm-container">
         <form className="form" onChange={this.handleChange}>
@@ -44,6 +100,7 @@ class ItemForm extends Component {
               className="input"
               type="text"
               placeholder="What are you giving away ?"
+              name="name"
             />
           </div>
 
@@ -52,7 +109,7 @@ class ItemForm extends Component {
               Category
             </label>
 
-            <select id="category" defaultValue="-1">
+            <select id="category" name ="category" defaultValue="-1">
               <option value="-1" disabled>
                 Select a category
               </option>
@@ -67,7 +124,12 @@ class ItemForm extends Component {
             <label className="label" htmlFor="quantity">
               Quantity
             </label>
-            <input className="input" id="quantity" type="number" />
+            <input 
+              name="quantity"
+              className="input" 
+              id="quantity" 
+              type="number" 
+            />
           </div>
 
           <div className="form-group">
@@ -82,6 +144,7 @@ class ItemForm extends Component {
               Description
             </label>
             <textarea
+              name="description"
               id="description"
               className="text-area"
               placeholder="Tell us something about this item"
@@ -92,7 +155,12 @@ class ItemForm extends Component {
             <label className="custom-upload label" htmlFor="image">
               Upload image
             </label>
-            <input className="input" id="image" type="file" />
+            <input 
+              name="image"
+              className="input" 
+              id="image" 
+              type="file" 
+            />
           </div>
 
           <h2>Contact information</h2>
@@ -115,11 +183,11 @@ class ItemForm extends Component {
             personal page.
           </p>
 
-          <button className="btn-submit">Add Item</button>
+          <button className="btn-submit" onClick={this.handleSubmit}>Add Item</button>
         </form>
       </div>
     );
   }
 }
 
-export default ItemForm;
+export default withUser(ItemForm);
